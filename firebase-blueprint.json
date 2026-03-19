@@ -1,0 +1,143 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Campaign": {
+      "title": "Campaign",
+      "description": "Outreach campaign details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "paused", "draft", "completed"] },
+        "type": { "type": "string", "enum": ["reddit", "linkedin", "email"] },
+        "prospectCount": { "type": "number" },
+        "replyRate": { "type": "number" },
+        "intentScore": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["name", "status", "ownerId"]
+    },
+    "Prospect": {
+      "title": "Prospect",
+      "description": "Target lead information",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "company": { "type": "string" },
+        "role": { "type": "string" },
+        "intentScore": { "type": "number" },
+        "discType": { "type": "string", "enum": ["D", "I", "S", "C"] },
+        "status": { "type": "string", "enum": ["new", "contacted", "replied", "converted", "rejected"] },
+        "campaignId": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "lastSignalAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "ownerId"]
+    },
+    "Signal": {
+      "title": "Signal",
+      "description": "Real-time intent signal from Reddit or LinkedIn",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "source": { "type": "string", "enum": ["reddit", "linkedin"] },
+        "content": { "type": "string" },
+        "author": { "type": "string" },
+        "intentScore": { "type": "number" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "url": { "type": "string" },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["source", "content", "ownerId"]
+    },
+    "GeneratedEmail": {
+      "title": "Generated Email",
+      "description": "AI-crafted outreach email",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "prospectId": { "type": "string" },
+        "campaignId": { "type": "string" },
+        "subject": { "type": "string" },
+        "body": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "sent", "failed"] },
+        "ownerId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["prospectId", "subject", "body", "ownerId"]
+    },
+    "ABTest": {
+      "title": "A/B Test",
+      "description": "Message variant performance test",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "campaignId": { "type": "string" },
+        "variantA": { "type": "string" },
+        "variantB": { "type": "string" },
+        "winner": { "type": "string", "enum": ["A", "B", "none"] },
+        "status": { "type": "string", "enum": ["ongoing", "completed"] },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["campaignId", "variantA", "variantB", "ownerId"]
+    },
+    "SequenceTemplate": {
+      "title": "Sequence Template",
+      "description": "Reusable outreach sequence",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "steps": { "type": "array", "items": { "type": "object" } },
+        "ownerId": { "type": "string" }
+      },
+      "required": ["name", "ownerId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/campaigns/{campaignId}": {
+      "schema": "Campaign",
+      "description": "Campaign data"
+    },
+    "/prospects/{prospectId}": {
+      "schema": "Prospect",
+      "description": "Prospect data"
+    },
+    "/signals/{signalId}": {
+      "schema": "Signal",
+      "description": "Intent signals"
+    },
+    "/emails/{emailId}": {
+      "schema": "GeneratedEmail",
+      "description": "Generated emails"
+    },
+    "/abTests/{testId}": {
+      "schema": "ABTest",
+      "description": "A/B testing data"
+    },
+    "/sequences/{sequenceId}": {
+      "schema": "SequenceTemplate",
+      "description": "Sequence templates"
+    }
+  }
+}

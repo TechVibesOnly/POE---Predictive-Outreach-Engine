@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-deep: #050508;
+  --color-bg-surface: rgba(10, 10, 15, 0.7);
+  --color-bg-elevated: #0a0a0f;
+  --color-indigo-primary: #6366F1;
+  --color-teal-primary: #06B6D4;
+  --color-amber-primary: #F59E0B;
+  --color-border-default: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(99, 102, 241, 0.5);
+  
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-deep text-white font-body antialiased;
+  }
+}
+
+@layer utilities {
+  .text-gradient-indigo-teal {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-indigo-primary to-teal-primary;
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-xl bg-bg-surface border border-border-default;
+  }
+}
+
+/* Custom animations for cosmic orbs */
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(30px, -50px); }
+  66% { transform: translate(-20px, 40px); }
+  100% { transform: translate(0, 0); }
+}
+
+.animate-drift {
+  animation: drift 45s ease-in-out infinite;
+}
+
+.animate-drift-slow {
+  animation: drift 60s ease-in-out infinite;
+}
+
+.animate-drift-fast {
+  animation: drift 30s ease-in-out infinite;
+}
+
+/* Masonry Grid Utilities */
+.masonry-grid {
+  column-gap: 16px;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 640px) { .masonry-grid { column-count: 2; } }
+@media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+@media (min-width: 1400px) { .masonry-grid { column-count: 4; } }
